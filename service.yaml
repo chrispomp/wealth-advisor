@@ -30,4 +30,4 @@ spec:
           value: "citi-internal-documents_1751073680953_gcs_store" # <-- Add your datastore ID here
         - name: DATA_STORE_LOCATION
           value: "global" # Or your specific datastore location
-      serviceAccountName: "serviceAccount:ai-wealth-advisor-sa@fsi-banking-agentspace.iam.gserviceaccount.com" # <-- Add your service account email
+      serviceAccountName: "serviceAccount:wealth-advisor-sa@fsi-banking-agentspace.iam.gserviceaccount.com" # <-- Add your service account email
