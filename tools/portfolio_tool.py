@@ -62,7 +62,9 @@ def get_user_portfolio_summary(client_id: str) -> str:
         if 'total_market_value' in results_df.columns:
             results_df['total_market_value'] = results_df['total_market_value'].astype(float)
 
-        return results_df.to_json(orient='records')
+        # Convert the first (and only) row to a dictionary and then to a JSON string
+        result_dict = results_df.iloc[0].to_dict()
+        return json.dumps(result_dict)
 
     except Exception as e:
         logging.error(f"BigQuery query failed for client_id {client_id}: {e}")
