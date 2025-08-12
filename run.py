@@ -3,7 +3,7 @@
 import asyncio
 from google.adk.runners import InMemoryRunner
 from main import create_agent
-from vertexai.generative_models import Content, Part
+from google.genai.types import Content, Part
 
 async def main():
     """Runs the AI Wealth Advisor agent."""
