@@ -47,7 +47,7 @@ def create_agent():
     
     return LlmAgent(
         name="ai_wealth_advisor",
-        model="gemini-1.5-flash",
+        model="gemini-2.5-flash",
         instruction=AGENT_INSTRUCTIONS,
         tools=[
             get_user_portfolio_summary,
