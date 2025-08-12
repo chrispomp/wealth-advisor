@@ -3,11 +3,13 @@
 import os
 import json
 import logging
+import asyncio
 
 from flask import Flask, request
 from google.cloud import secretmanager
 import vertexai
 from google.adk.agents import LlmAgent
+from google.adk.runners import InMemoryRunner
 
 # --- Local Tool Imports ---
 from tools.portfolio_tool import get_user_portfolio_summary
@@ -55,7 +57,6 @@ def create_agent():
     
     return LlmAgent(
         model="gemini-2.5-flash",
-        name="Citi Wealth Advisor",
         instruction=AGENT_INSTRUCTIONS,
         tools=[
             get_user_portfolio_summary,
@@ -65,9 +66,10 @@ def create_agent():
     )
 
 agent = create_agent()
+runner = InMemoryRunner(agent=agent)
 
 @app.route("/chat", methods=["POST"])
-def chat_handler():
+async def chat_handler():
     """
     Handles the chat requests for a single client session.
     """
@@ -79,12 +81,17 @@ def chat_handler():
         return "Missing 'message' in request", 400
 
     message = request_data["message"]
+    user_id = "user-123"  # Replace with actual user management
+    session_id = "session-456" # Replace with actual session management
     
-    # This is a simplified example. In a real application, you would manage
-    # conversations and sessions more robustly.
-    response = "".join(list(agent.run(new_message=message)))
+    response_parts = []
+    async for event in runner.run_async(
+        user_id=user_id, session_id=session_id, new_message=message
+    ):
+        if event.is_final_response():
+            response_parts.append(event.text)
 
-    return json.dumps({"response": response})
+    return json.dumps({"response": "".join(response_parts)})
 
 # --- Main Entry Point ---
 if __name__ == "__main__":
