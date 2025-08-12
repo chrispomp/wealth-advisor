@@ -18,7 +18,7 @@ async def main():
             break
 
         async for event in runner.run_async(
-            user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(user_input)])
+            user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(text=user_input)])
         ):
             if event.is_final_response() and event.content:
                 print(f"AI Wealth Advisor: {event.content.parts[0].text}")

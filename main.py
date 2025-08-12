@@ -77,7 +77,7 @@ async def chat_handler():
     
     response_parts = []
     async for event in runner.run_async(
-        user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(message)])
+        user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(text=message)])
     ):
         if event.is_final_response() and event.content:
             response_parts.append(event.content.parts[0].text)
