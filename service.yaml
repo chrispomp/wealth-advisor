@@ -27,7 +27,7 @@ spec:
         - name: ALPHA_VANTAGE_API_KEY_SECRET
           value: "alpha-vantage-api-key-secret"
         - name: DATA_STORE_ID
-          value: "REPLACE_WITH_YOUR_DATA_STORE_ID" # <-- Add your datastore ID here
+          value: "citi-internal-documents_1751073680953_gcs_store" # <-- Add your datastore ID here
         - name: DATA_STORE_LOCATION
           value: "global" # Or your specific datastore location
-      serviceAccountName: "REPLACE_WITH_YOUR_SERVICE_ACCOUNT_EMAIL" # <-- Add your service account email
+      serviceAccountName: "925334697476-compute@developer.gserviceaccount.com" # <-- Add your service account email
