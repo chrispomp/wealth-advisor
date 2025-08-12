@@ -3,6 +3,7 @@
 import asyncio
 from google.adk.runners import InMemoryRunner
 from main import create_agent
+from google.generativeai.types import Content, Part
 
 async def main():
     """Runs the AI Wealth Advisor agent."""
@@ -17,10 +18,10 @@ async def main():
             break
 
         async for event in runner.run_async(
-            user_id=user_id, session_id=session_id, new_message=user_input
+            user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(user_input)])
         ):
             if event.is_final_response():
-                print(f"AI Wealth Advisor: {event.text}")
+                print(f"AI Wealth Advisor: {event.parts[0].text}")
 
 if __name__ == "__main__":
     asyncio.run(main())
