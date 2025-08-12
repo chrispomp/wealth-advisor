@@ -10,7 +10,7 @@ from google.cloud import secretmanager
 import vertexai
 from google.adk.agents import LlmAgent
 from google.adk.runners import InMemoryRunner
-from vertexai.generative_models import Content, Part
+from google.genai.types import Content, Part
 
 # --- Local Tool Imports ---
 from tools.portfolio_tool import get_user_portfolio_summary
