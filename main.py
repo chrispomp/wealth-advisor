@@ -35,21 +35,10 @@ You are a friendly and professional AI Wealth Advisor for Citi.
 
 # --- Secret & API Key Management ---
 def get_alpha_vantage_api_key():
-    """Fetches the Alpha Vantage API key from Google Secret Manager."""
-    try:
-        secret_id = os.environ.get("ALPHA_VANTAGE_API_KEY_SECRET")
-        if not secret_id:
-            raise ValueError("ALPHA_VANTAGE_API_KEY_SECRET environment variable not set.")
-            
-        client = secretmanager.SecretManagerServiceClient()
-        name = f"projects/{GCP_PROJECT_ID}/secrets/{secret_id}/versions/latest"
-        response = client.access_secret_version(request={"name": name})
-        api_key = response.payload.data.decode("UTF-8")
-        os.environ["ALPHA_VANTAGE_API_KEY"] = api_key
-        logging.info("Successfully fetched Alpha Vantage API key.")
-    except Exception as e:
-        logging.error(f"Failed to fetch Alpha Vantage API key: {e}")
-        os.environ["ALPHA_VANTAGE_API_KEY"] = "key_not_found"
+    """Sets the Alpha Vantage API key."""
+    # Replace the placeholder with your actual API key
+    os.environ["ALPHA_VANTAGE_API_KEY"] = "NZJEA6QEWNX6IFRC"
+    logging.info("Successfully set Alpha Vantage API key.")
 
 # --- Agent Definition ---
 def create_agent():
@@ -58,7 +47,7 @@ def create_agent():
     
     return LlmAgent(
         name="ai_wealth_advisor",
-        model="gemini-2.5-flash",
+        model="gemini-1.5-flash",
         instruction=AGENT_INSTRUCTIONS,
         tools=[
             get_user_portfolio_summary,
