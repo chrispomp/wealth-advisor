@@ -10,7 +10,7 @@ from google.cloud import secretmanager
 import vertexai
 from google.adk.agents import LlmAgent
 from google.adk.runners import InMemoryRunner
-from google.ai.generativelanguage import Content, Part
+from vertexai.generative_models import Content, Part
 
 # --- Local Tool Imports ---
 from tools.portfolio_tool import get_user_portfolio_summary
@@ -79,7 +79,7 @@ async def chat_handler():
     async for event in runner.run_async(
         user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(message)])
     ):
-        if event.is_final_response():
+        if event.is_final_response() and event.content:
             response_parts.append(event.content.parts[0].text)
 
     return json.dumps({"response": "".join(response_parts)})
