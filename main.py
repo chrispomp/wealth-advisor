@@ -91,7 +91,7 @@ async def chat_handler():
         user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(message)])
     ):
         if event.is_final_response():
-            response_parts.append(event.parts[0].text)
+            response_parts.append(event.message.parts[0].text)
 
     return json.dumps({"response": "".join(response_parts)})
 

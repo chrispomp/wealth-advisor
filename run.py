@@ -21,7 +21,7 @@ async def main():
             user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(user_input)])
         ):
             if event.is_final_response():
-                print(f"AI Wealth Advisor: {event.parts[0].text}")
+                print(f"AI Wealth Advisor: {event.message.parts[0].text}")
 
 if __name__ == "__main__":
     asyncio.run(main())
