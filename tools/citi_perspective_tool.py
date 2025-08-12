@@ -1,6 +1,6 @@
 # /wealth-advisor/tools/citi_perspective_tool.py
 
-from google.generativeai.experimental import adk
+from google.generativeai.tools import tool
 from google.cloud import discoveryengine_v1 as discoveryengine
 import os
 import json
@@ -17,15 +17,20 @@ PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
 LOCATION = os.environ.get("DATA_STORE_LOCATION", "global")
 DATA_STORE_ID = os.environ.get("DATA_STORE_ID")
 
-@adk.tool
+@tool
 def get_citi_perspective(query: str) -> str:
     """
     Searches Citi's internal knowledge base for official perspectives,
     recommendations, policies, or answers to FAQs. Use this tool to answer
     questions about Citi's market outlook or internal procedures.
     """
-    if not all([search_client, PROJECT_ID, LOCATION, DATA_STORE_ID]):
-        return json.dumps({"error": "Vertex AI Search client or environment variables are not configured."})
+    if not PROJECT_ID:
+        raise ValueError("GCP_PROJECT_ID environment variable not set.")
+    if not DATA_STORE_ID:
+        raise ValueError("DATA_STORE_ID environment variable not set.")
+
+    if not search_client:
+        return json.dumps({"error": "Vertex AI Search client is not configured."})
 
     serving_config = search_client.serving_config_path(
         project=PROJECT_ID,

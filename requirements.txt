@@ -10,5 +10,6 @@ gunicorn
 pandas
 flask
 websockets
-google-cloud-secretmanager
+google-cloud-secret-manager
 google-cloud-discoveryengine
+google-generativeai

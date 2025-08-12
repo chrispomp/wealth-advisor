@@ -1,6 +1,6 @@
 # /wealth-advisor/tools/portfolio_tool.py
 
-from google.generativeai.experimental import adk
+from google.generativeai.tools import tool
 from google.cloud import bigquery
 import os
 import json
@@ -16,7 +16,7 @@ except Exception as e:
 
 DATASET_ID = os.environ.get("DATASET_ID")
 
-@adk.tool
+@tool
 def get_user_portfolio_summary(client_id: str) -> str:
     """
     Fetches the total market value and top 3 holdings for a given client_id.
