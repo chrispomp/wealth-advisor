@@ -1,6 +1,5 @@
 # /wealth-advisor/tools/citi_perspective_tool.py
 
-from google.generativeai.tools import tool
 from google.cloud import discoveryengine_v1 as discoveryengine
 import os
 import json
@@ -17,7 +16,6 @@ PROJECT_ID = os.environ.get("GCP_PROJECT_ID")
 LOCATION = os.environ.get("DATA_STORE_LOCATION", "global")
 DATA_STORE_ID = os.environ.get("DATA_STORE_ID")
 
-@tool
 def get_citi_perspective(query: str) -> str:
     """
     Searches Citi's internal knowledge base for official perspectives,

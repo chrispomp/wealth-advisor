@@ -1,15 +1,14 @@
 # /wealth-advisor/tools/market_insights_tool.py
 
 import requests
-from google.generativeai.tools import tool
 import os
 import json
 import logging
+from typing import Optional
 
 API_ENDPOINT = "https://www.alphavantage.co/query"
 
-@tool
-def get_market_news_and_sentiment(tickers: str = None, topics: str = None) -> str:
+def get_market_news_and_sentiment(tickers: Optional[str] = None, topics: Optional[str] = None) -> str:
     """
     Retrieves up to 5 latest news articles and their sentiment for given stock tickers or topics from Alpha Vantage.
     You can specify tickers (e.g., 'AAPL,IBM'), topics (e.g., 'technology,ipo'), or both.

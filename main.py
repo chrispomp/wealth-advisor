@@ -7,7 +7,7 @@ import logging
 
 from flask import Flask, request
 from google.cloud import secretmanager
-from google.generativeai.client import client
+from google import genai
 
 # --- Local Tool Imports ---
 from tools.portfolio_tool import get_user_portfolio_summary
@@ -49,18 +49,19 @@ def get_alpha_vantage_api_key():
         # In a real app, you might want to handle this more gracefully
         # For this example, we'll proceed and let the tool fail if the key is missing.
         os.environ["ALPHA_VANTAGE_API_KEY"] = "key_not_found"
-        
+
 # --- Agent Definition ---
-model = client.GenerativeModel(
-    model_name="models/gemini-1.5-pro-latest",
+# Initialize the generative AI client
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-pro-latest",
+    system_instruction=AGENT_INSTRUCTIONS,
     tools=[
         get_user_portfolio_summary,
         get_market_news_and_sentiment,
         get_citi_perspective,
     ],
-    system_instruction=AGENT_INSTRUCTIONS,
 )
-
 
 @app.route("/chat", methods=["POST"])
 def chat_handler():
