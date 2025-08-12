@@ -10,7 +10,7 @@ from google.cloud import secretmanager
 import vertexai
 from google.adk.agents import LlmAgent
 from google.adk.runners import InMemoryRunner
-from google.generativeai.types import Content, Part
+from google.ai.generativelanguage import Content, Part
 
 # --- Local Tool Imports ---
 from tools.portfolio_tool import get_user_portfolio_summary
@@ -80,7 +80,7 @@ async def chat_handler():
         user_id=user_id, session_id=session_id, new_message=Content(parts=[Part.from_text(message)])
     ):
         if event.is_final_response():
-            response_parts.append(event.message.parts[0].text)
+            response_parts.append(event.content.parts[0].text)
 
     return json.dumps({"response": "".join(response_parts)})
 
