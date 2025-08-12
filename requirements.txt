@@ -1,6 +1,5 @@
 # /wealth-advisor/requirements.txt
 
-google-genai==1.29.0
 google-cloud-aiplatform
 google-cloud-bigquery
 google-cloud-run
@@ -9,6 +8,7 @@ requests
 gunicorn
 pandas
 flask
-websockets
 google-cloud-secret-manager
 google-cloud-discoveryengine
+google-api-python-client
+google-adk

@@ -13,7 +13,7 @@ spec:
       containers:
       - image: us-central1-docker.pkg.dev/fsi-banking-agentspace/ai-agents/ai-wealth-advisor:latest
         ports:
-        - name: http1 # Or 'ws' if supported, http1 is standard for websockets over HTTP
+        - name: http1
           containerPort: 8080
         resources:
           limits:

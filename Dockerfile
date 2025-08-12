@@ -17,9 +17,5 @@ COPY --chown=appuser:appuser . .
 # Expose the port the app runs on (used by Cloud Run)
 EXPOSE 8080
 
-# Run the application
-# Note: The provided main.py uses asyncio and the 'websockets' library directly.
-# To run this with Gunicorn, you would need a worker that supports asyncio, like uvicorn.
-# For simplicity, this CMD will run the python script directly.
-# For production Gunicorn, the main.py would need restructuring to integrate with a WSGI server.
-CMD ["python", "main.py"]
+# Run the application with Gunicorn
+CMD ["gunicorn", "--workers", "1", "--threads", "8", "--timeout", "0", "main:app"]

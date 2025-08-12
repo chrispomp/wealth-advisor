@@ -2,12 +2,12 @@
 
 import os
 import json
-import asyncio
 import logging
 
 from flask import Flask, request
 from google.cloud import secretmanager
-from google import genai
+import vertexai
+from google.adk.agents import LlmAgent
 
 # --- Local Tool Imports ---
 from tools.portfolio_tool import get_user_portfolio_summary
@@ -46,28 +46,30 @@ def get_alpha_vantage_api_key():
         logging.info("Successfully fetched Alpha Vantage API key.")
     except Exception as e:
         logging.error(f"Failed to fetch Alpha Vantage API key: {e}")
-        # In a real app, you might want to handle this more gracefully
-        # For this example, we'll proceed and let the tool fail if the key is missing.
         os.environ["ALPHA_VANTAGE_API_KEY"] = "key_not_found"
 
 # --- Agent Definition ---
-# Initialize the generative AI client
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel(
-    model_name="gemini-1.5-pro-latest",
-    system_instruction=AGENT_INSTRUCTIONS,
-    tools=[
-        get_user_portfolio_summary,
-        get_market_news_and_sentiment,
-        get_citi_perspective,
-    ],
-)
+def create_agent():
+    """Creates the AI Wealth Advisor agent."""
+    vertexai.init(project=GCP_PROJECT_ID, location="us-central1")
+    
+    return LlmAgent(
+        model="gemini-2.5-flash",
+        name="Citi Wealth Advisor",
+        instruction=AGENT_INSTRUCTIONS,
+        tools=[
+            get_user_portfolio_summary,
+            get_market_news_and_sentiment,
+            get_citi_perspective,
+        ],
+    )
+
+agent = create_agent()
 
 @app.route("/chat", methods=["POST"])
 def chat_handler():
     """
     Handles the chat requests for a single client session.
-    - Note: JWT authentication would be added here in a production system.
     """
     if not request.is_json:
         return "Request should be in JSON format", 400
@@ -77,11 +79,12 @@ def chat_handler():
         return "Missing 'message' in request", 400
 
     message = request_data["message"]
-    chat = model.start_chat()
-    response = chat.send_message(message)
+    
+    # This is a simplified example. In a real application, you would manage
+    # conversations and sessions more robustly.
+    response = "".join(list(agent.run(new_message=message)))
 
-    return json.dumps({"response": response.text})
-
+    return json.dumps({"response": response})
 
 # --- Main Entry Point ---
 if __name__ == "__main__":
